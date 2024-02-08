@@ -11,7 +11,6 @@ class ProvinceController extends Controller
 {
     public function index(Request $request)
     {
-        $depth = (int)$request->input('depth', 1);
         $search = '%' . str_replace(' ', '%', $request->input('search')) . '%';
         $sortBy = $request->input('sort_by', 'code');
 
@@ -24,19 +23,15 @@ class ProvinceController extends Controller
         $provinces = $provinces->orderBy('code')
             ->get();
 
-        return ProvinceResource::collection($provinces)
-            ->depthFromProvince($depth);
+        return ProvinceResource::collection($provinces);
     }
 
-    public function show($code, Request $request)
+    public function show($provinceCode)
     {
-        $depth = (int)$request->input('depth', 1);
+        $province = Province::where('code', $provinceCode)
+            ->orWhere('code_name', $provinceCode)
+            ->firstOrFail();
 
-        $provinces = Province::where('code', $code)
-            ->orWhere('code_name', $code)
-            ->first();
-
-        return ProvinceResource::make($provinces)
-            ->depthFromProvince($depth);
+        return ProvinceResource::make($province);
     }
 }

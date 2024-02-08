@@ -7,21 +7,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class DistrictResource extends JsonResource
 {
-    protected $depthFromProvince;
-    protected $depthFromDistrict;
-
-    public function depthFromProvince($value)
-    {
-        $this->depthFromProvince = $value;
-        return $this;
-    }
-
-    public function depthFromDistrict($value)
-    {
-        $this->depthFromDistrict = $value;
-        return $this;
-    }
-
     /**
      * Transform the resource into an array.
      *
@@ -29,8 +14,6 @@ class DistrictResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $wards = $this->depthFromProvince >= 3 || $this->depthFromDistrict >= 2 ? WardResource::collection($this->wards) : [];
-
         return [
             'code' => $this->code,
             'name' => $this->name,
@@ -40,12 +23,6 @@ class DistrictResource extends JsonResource
             'code_name' => $this->code_name,
             'province_code' => $this->province_code,
             'administrative_unit_id' => $this->administrative_unit_id,
-            'wards' => $wards
         ];
-    }
-
-    public static function collection($resource)
-    {
-        return new DistrictResourceCollection($resource);
     }
 }

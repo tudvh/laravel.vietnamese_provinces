@@ -22,5 +22,7 @@ Route::get('/', [Api\HomeController::class, 'index'])->name('api');
 
 Route::group(['prefix' => 'p'], function () {
     Route::get('/', [Api\ProvinceController::class, 'index'])->name('api.provinces.index');
-    Route::get('/{code}', [Api\ProvinceController::class, 'show'])->name('api.provinces.show');
+    Route::get('/{provinceCode}', [Api\ProvinceController::class, 'show'])->name('api.provinces.show');
+    Route::get('/{provinceCode}/d', [Api\DistrictController::class, 'getByProvinceCode'])->name('api.districts.getByProvinceCode');
+    Route::get('/{provinceCode}/d/{districtCode}', [Api\DistrictController::class, 'show'])->name('api.districts.show');
 });
